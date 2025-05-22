@@ -1,0 +1,34 @@
+
+:root {
+  --navbarheight: 58px;
+  --sidebar_l_width: 350px;
+  --sidebar_r_width: 350px;
+  --text-3xl: 3rem;
+
+
+}
+
+
+@layer utilities {
+  .h-navbarheight {
+    height: var(--navbarheight);
+  }
+  .p-navbarheight {
+    padding-top: var(--navbarheight);
+  }
+  .w-sidebar_l_width {
+    width: var(--sidebar_l_width);
+  }
+  .w-sidebar_r_width {
+    width: var(--sidebar_r_width);
+  }
+  .mt-duetonavbar {
+    margin-top: var(--navbarheight);
+  }
+  .ml-body{
+    margin-left: var(--sidebar_l_width);
+  }
+  .mr-body{
+    margin-right:var(--sidebar_r_width);
+  }
+}
