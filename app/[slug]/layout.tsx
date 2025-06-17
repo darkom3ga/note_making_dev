@@ -1,25 +1,37 @@
-import { LeftSidebar , RightSidebar} from "@/app/components/Sidebar";
-// Remove RightSidebar since you're not using it (optional)
-import { Work_Sans } from "next/font/google";
+import {getServerSession} from 'next-auth';
+import TOC from '@/app/components/widgets/toc';
+import Navbar from "@/app/components/Navbar";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
-const geistWork_Sans = Work_Sans({
-  variable: "--font-work-sans",
-  weight: "400",
-  subsets: ["latin"],
-});
-
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default async function Layout({ children }: { children: React.ReactNode }) {
+  const session = await getServerSession(authOptions) ;
+  
   return (
-    <div className={`flex items-start gap-14 font-orbitron`}>
-      {/* <aside className="w-sidebar_l_width p-navbarheight sticky top-0 h-screen overflow-y-auto">
-        <LeftSidebar />
-      </aside> */}
-      <main className="flex-1 p-navbarheight min-h-screen pt-6 px-10 overflow-y-auto">
-        {children}
+    <div>
+      <Navbar session={session}  />
+      <main className="sm:container mx-auto w-[88vw] h-auto">    
+        <div className={`flex items-start gap-14 font-orbitron`}>
+          {/* Below is the leftSidebar */}
+          <aside className="md:flex hidden flex-[1] min-w-[230px] sticky top-16 flex-col h-[92.75vh] overflow-y-auto">
+            {/* <RightSidebar /> */}
+          </aside>
+          {/* Below is the Main Content */}
+          <div className="flex-[4]">
+            <div className="flex items-start gap-14">
+              <div className="flex-[3] pt-10">
+                {children}
+              </div>
+              {/* Below is the Right Sidebar */}
+              <div className="lg:flex flex-[1] min-w-[230px] py-8 sticky top-16 h-[95.95vh]">
+                <div className="flex flex-col gap-3 w-full">
+                  <TOC/>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
       </main>
-      {/* <aside className="w-sidebar_r_width p-navbarheight sticky top-0 h-screen overflow-y-auto">
-        <RightSidebar />
-      </aside> */}
     </div>
   );
 }

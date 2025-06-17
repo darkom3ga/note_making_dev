@@ -1,5 +1,5 @@
 "use client";
-import TOC from "./widgets/toc/toc";
+import TOC from "./widgets/toc";
 import { useEffect, useState } from "react";
 
 export function LeftSidebar() {
@@ -12,7 +12,7 @@ export function LeftSidebar() {
   return (
     <div className="w-sidebar_l_width h-full p-4">
       <aside className="w-sidebar_l_width h-full" >
-      <TOC headings={headings}/>
+      <TOC />
       </aside>
     </div>
   );
@@ -22,7 +22,8 @@ export function RightSidebar() {
   const [headings, setHeadings] = useState<{ id: string; text: string }[]>([]);
 
   useEffect(() => {
-    const headingElements = Array.from(document.querySelectorAll("main h1 , main h2, main h3"));
+    const headingElements = Array.from(document.querySelectorAll("main h1 , main h2, main h3 , h1 ,h2, h3"));
+    console.log(headingElements);
     const extracted = headingElements.map((heading) => {
       const id = heading.id || heading.textContent?.toLowerCase().replace(/\s+/g, "-") || "heading";
       if (!heading.id) heading.id = id;
@@ -32,10 +33,9 @@ export function RightSidebar() {
   }, []);
 
   return (
-    <div className="w-sidebar_l_width h-full p-4">
-      <aside className="w-sidebar_l_width h-full">
-        <TOC headings={headings} />
-      </aside>
-    </div>
+
+        
+
+
   );
 }

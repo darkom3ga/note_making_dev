@@ -1,16 +1,22 @@
 "use client";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon , } from "@fortawesome/react-fontawesome";
 import { faGoogle  } from "@fortawesome/free-brands-svg-icons";
-import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { usePathname } from 'next/navigation'
+
 import { signIn , signOut } from "next-auth/react";
 import Link from "next/link";
 import { HexagonIcon ,LogIn , LogOut  } from "lucide-react";
 import type { ReactNode } from "react";
 import NavHelper from "./NavbarHelper";
 import { MoveUpRightIcon } from "lucide-react"; 
-import Search from "@/app/components/ui/search";
-
+import Image from 'next/image'
+import logo from '@/app/public/logo.png';
+import EditableToggleIcon from './editablelogic/EditableToggleIcon'
+interface NavbarProps {
+  session: any;
+}
 type NavLink =
   | {
       title: string;
@@ -22,9 +28,27 @@ type NavLink =
 
 export function Logo() {
   return (
-    <Link href="/" className="flex items-center gap-2.5">
-      <HexagonIcon className="w-7 h-7 text-muted-foreground fill-current" />
-      <h2 className="text-md font-bold">Dark</h2>
+     <Link href="/" >
+      <div className="flex gap-3 items-center">
+        <span className="text-[36px] font-black">runic</span>
+        <span className="text-[36px] font-black text-[#56b6ff]">notes</span>
+      </div> 
+    </Link>
+  );
+}
+export function LogoMain() {
+  return (
+     <Link href="/" className="ml-15 flex items-center justify-center" >
+      <div className="flex items-center">
+        <Image
+          src={logo}
+          width={38}
+          height={38}
+          alt="Picture of the author"
+        />
+        <h1 className=" text-[34px] font-logo">Runic</h1>
+        <h2 className="text-[34px] font-logo">Notes</h2>
+      </div> 
     </Link>
   );
 }
@@ -58,14 +82,42 @@ export function NavMenu() {
           ) : (
             <NavHelper
               key={item.title + item.href}
-              activeClassName="text-primary font-semibold"
+              activeClassName="text-primary font-dmsans"
               className="flex items-center gap-1"
               href={item.href}
             >
               {item.title}{" "}
               {item.external && (
                 <MoveUpRightIcon
-                  className="w-3 h-3 align-super"
+                  className="w-3 h-3 font-dmsans align-super"
+                  strokeWidth={3}
+                />
+              )}
+            </NavHelper>
+          );
+        return componentData;
+      })}
+    </>
+  );
+}
+export function NavMenu2_1() {
+  return (
+    <>
+      {NAVLINKS.slice(0, 2).map((item) => {
+        const componentData =
+          item.href == null ? (
+            item.component
+          ) : (
+            <NavHelper
+              key={item.title + item.href}
+              activeClassName="text-primary font-dmsans"
+              className="flex items-center gap-1"
+              href={item.href}
+            >
+              {item.title}{" "}
+              {item.external && (
+                <MoveUpRightIcon
+                  className="w-3 h-3 font-dmsans align-super"
                   strokeWidth={3}
                 />
               )}
@@ -77,110 +129,61 @@ export function NavMenu() {
   );
 }
 
-export default function Navbar({ session }: { session: any }) {
+export function NavMenu2_2() {
   return (
-      <nav className="w-full border-b h-navbarheight sticky top-0 z-50 border-[#1d1d1d] lg:px-4 px-2 font-orbitron">
-        <div className="sm:p-3 p-1 max-w-[1530px] mx-auto h-full flex items-center justify-between md:gap-2">
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center gap-4">
-              <div className="sm:flex hidden gap-3">
-                <Logo />
-              </div>
-              <div className="lg:flex hidden items-center gap-5 text-sm font-medium text-muted-foreground">
-                <NavMenu />
-              </div>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2">
-              <Search placeholder="Search invoices..." />
-              <div className="flex ml-2.5 sm:ml-0">
-                {!session ? (
-                  <Link
-                    href="#"
-                    className="h-8 w-8 hover:bg-accent gap-[5px] hover:text-accent-foreground inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      signIn("google");
-                    }}
-                  >
-                    {/* <LogIn/> */}
-                    <FontAwesomeIcon icon={faGoogle} style={{ fontSize: "16px", width: "16px", height: "16px" }} />
-                    {/* <span>LogIn</span> */}
-
-                  </Link>
-
-                  // <Link
-                  //   // className="bg-[#121212] text-white px-4 py-2 rounded-md font-semibold hover:bg-gray-200 hover:text-black transition flex items-center space-x-2"
-                  //   className={buttonVariants({ variant: "ghost", size: "icon" })}
-                  //   onClick={() => signIn("google")}
-                  // >
-                  //   <LogIn/>
-                  //   {/* <span>Login With Google</span> */}
-                  // </Link>
-                ) : (
-                    <button
-                    // className="bg-[#121212] text-white px-4 py-2 rounded-md font-semibold hover:bg-gray-200 hover:text-black transition flex items-center space-x-2"
-                    onClick={() => signOut()}
-                  >
-                    {/* <FontAwesomeIcon icon={faSignOutAlt} style={{ fontSize: "12px", width: "12px", height: "12px" }} /> */}
-                    <LogOut/>
-                    {/* <span>Sign Out</span> */}
-                  </button>
-                )
-                }
-              </div>
-            </div>
-          </div>
-        </div>
-      </nav>
-    // </main>
+    <>
+      {NAVLINKS.slice(2, 4).map((item) => {
+        const componentData =
+          item.href == null ? (
+            item.component
+          ) : (
+            <NavHelper
+              key={item.title + item.href}
+              activeClassName="text-primary font-dmsans"
+              className="flex items-center gap-1"
+              href={item.href}
+            >
+              {item.title}{" "}
+              {item.external && (
+                <MoveUpRightIcon
+                  className="w-3 h-3 font-dmsans align-super"
+                  strokeWidth={3}
+                />
+              )}
+            </NavHelper>
+          );
+        return componentData;
+      })}
+    </>
   );
 }
 
+export default function Navbar({ session}: NavbarProps)  {
+     const pathname = usePathname()
 
-// "use client";
+    return (
+      <nav className="w-full bg-inherit h-navbarheight sticky top-0 z-50 border-[#1d1d1d] lg:px-4 px-2 border-b font-orbitron">
+          <div className="relative sm:p-3 max-w-[1530px] mx-auto h-full flex justify-between md:gap-2">
+            {/* Left section */}
+            <div className="flex flex-1 gap-10 justify-end text-gray-400">
+              <NavMenu2_1 />
+            </div>
 
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faGoogle  } from "@fortawesome/free-brands-svg-icons";
-// import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
-// import { signIn , signOut } from "next-auth/react";
+            {/* Center */}
+            <div className="flex flex-none items-center justify-center ml-10 mr-10">
+              <Logo />
+            </div>
 
-// export default function Navbar({ session }: { session: any }) {
-//   return (
-//       <nav className="w-full border-b h-navbarheight sticky top-0 z-50 border-[#1d1d1d] lg:px-4 px-2 backdrop-filter backdrop-blur-xl bg-opacity-5">
-//       {/* <header className="bg-[#080a0b32] h-navbarheight fixed w-full border-b-1 border-[#1d1d1d] text-[14px] py-4 z-50 px-6 flex justify-between items-center font-orbitron"> */}
-//         <div className="flex items-center space-x-4">
-//           <h1 className="text-xl  font-bold flex items-center">
-//             <span className="bg-white text-black px-2 py-1 rounded">Dark</span>
-//           </h1>
-//           <nav className="flex space-x-4">
-//             <a href="#" className="text-gray-300 hover:text-white px-3 py-2 transition">Websites</a>
-//             <a href="#" className="text-gray-300 hover:text-white px-3 py-2 transition">Templates</a>
-//           </nav>
-//         </div>
+            {/* Right spacer */}
+            <div className="flex flex-1 gap-10 justify-start text-gray-400">
+              <NavMenu2_2 />
+            </div>
+            <div className="flex items-center gap-4">
+              <EditableToggleIcon path= {pathname} />
+            </div>
+          </div>
 
-//         {!session ? (
-//           <button
-//             className="bg-[#121212] text-white px-4 py-2 rounded-md font-semibold hover:bg-gray-200 hover:text-black transition flex items-center space-x-2"
-//             onClick={() => signIn("google")}
-//           >
-//             <FontAwesomeIcon icon={faGoogle} style={{ fontSize: "12px", width: "12px", height: "12px" }} />
-//             <span>Login With Google</span>
-//           </button>
-//         ) : (
-//             <button
-//             className="bg-[#121212] text-white px-4 py-2 rounded-md font-semibold hover:bg-gray-200 hover:text-black transition flex items-center space-x-2"
-//             onClick={() => signOut()}
-//           >
-//             <FontAwesomeIcon icon={faSignOutAlt} style={{ fontSize: "12px", width: "12px", height: "12px" }} />
-//             <span>Sign Out</span>
-//           </button>
-//         )
-//         }
+      </nav>
+  );
+}
 
-//       </nav>
-//     // </main>
-//   );
-// }

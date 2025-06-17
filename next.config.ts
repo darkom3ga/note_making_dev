@@ -4,15 +4,15 @@ const nextConfig: NextConfig = {
     experimental: {
     authInterrupts: true,
   },
-  // async redirects() {
-  //   return [
-  //     {
-  //       source : '/',
-  //       destination : '/home',
-  //       permanent: true ,
-  //     }
-  //   ]
-  // },
+  async redirects() {
+    return [
+      {
+        source : '/',
+        destination : '/home',
+        permanent: true ,
+      }
+    ]
+  },
   /* config options here */
 };
 

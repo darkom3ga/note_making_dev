@@ -1,33 +1,19 @@
-import mongoose from 'mongoose';
+import mongoose, { Connection } from "mongoose";
 
-const MONGODB_URI = process.env.MONGODB_URI!  ;
-
-if (!MONGODB_URI) {
-  throw new Error('Please define the MONGODB_URI environment variable');
-}
-
-let globalWithMongoose = global as typeof globalThis & {
-  mongooseCache?: {
-    conn: typeof mongoose | null;
-    promise: Promise<typeof mongoose> | null;
-  };
-};
-
-if (!globalWithMongoose.mongooseCache) {
-  globalWithMongoose.mongooseCache = { conn: null, promise: null };
-}
-
-const cached = globalWithMongoose.mongooseCache;
+let cachedConnection: Connection | null = null;
 
 export default async function dbConnect() {
-  if (cached.conn) return cached.conn;
-
-  if (!cached.promise) {
-    cached.promise = mongoose.connect(MONGODB_URI, {
-      bufferCommands: false,
-    });
+  if (cachedConnection) {
+    console.log("Using cached db connection");
+    return cachedConnection;
   }
-
-  cached.conn = await cached.promise;
-  return cached.conn;
+  try {
+    const cnx = await mongoose.connect(process.env.MONGODB_URI!);
+    cachedConnection = cnx.connection;
+    console.log("New mongodb connection established");
+    return cachedConnection;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 }

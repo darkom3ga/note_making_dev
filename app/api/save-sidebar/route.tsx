@@ -1,4 +1,4 @@
-// app/api/save-sidebar/route.ts
+// Logic to save sidebar width in a CSS file
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';

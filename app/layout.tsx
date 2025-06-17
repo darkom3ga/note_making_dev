@@ -1,11 +1,11 @@
 
-import type { Metadata } from "next";
-import { Geist, Geist_Mono , Work_Sans} from "next/font/google";
 import "./globals.css";
+import type { Metadata } from "next";
+import React from "react";
+import { Geist, Geist_Mono , Work_Sans ,Voltaire} from "next/font/google";
 import SessionWrapper from "@/app/components/_SessionWrapper"; 
+import LayoutClientWrapper from '@/app/components/editablelogic/LayoutClientWrapper';
 
-import Navbar from "@/app/components/Navbar";
-import {getServerSession} from 'next-auth'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,6 +18,11 @@ const geistWork_Sans = Work_Sans({
   subsets: ["latin"],
 });
 
+const FontLogo = Voltaire({ 
+  variable: "--font-logo",
+  weight : "400" ,
+  subsets: ["latin"],
+}); 
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -25,24 +30,18 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Notemaking",
-  description: "Created By Om3ga",
+  title: "Runic Notes",
+  description: "Blog and Notes all in one ?",
 };
 
-export default async function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  const session = await getServerSession() ;
+export default async function RootLayout({children}: Readonly<{ children: React.ReactNode;}>) {
   return (
       <html lang="en ">
-        <body
-            className={`${geistSans.variable} ${geistMono.variable} ${geistWork_Sans.variable} antialiased`}
-        >
+        <body className={`${geistSans.variable} ${geistMono.variable} ${geistWork_Sans.variable} ${FontLogo.variable} antialiased`}>
           <SessionWrapper>
-            <Navbar session={session} />
-            {children}
+            <LayoutClientWrapper>
+              {children}
+            </LayoutClientWrapper>
           </SessionWrapper>
         </body>
       </html>

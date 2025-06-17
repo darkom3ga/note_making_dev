@@ -1,5 +1,5 @@
 import dbConnect from '@/lib/dbConnect';
-import Page, { TypeScriptPage } from '@/models/page';
+import Page, { TypeScriptPage } from '@/dbmodels/page';
 import { notFound } from 'next/navigation';
 import {getServerSession } from 'next-auth'
 import MainContent from '@/app/components/MainContent';
@@ -15,7 +15,8 @@ export default async function PageBySlug({ params }: { params: { slug: string } 
     if (!page) return notFound();
 
     return (
-    <MainContent title={page.title} content={page.content} userAccess={page.userAccess} session={session}/>
+    
+    <MainContent inititle={page.title} content={page.content} userAccess={page.userAccess} session={session} date="date" author="RunicNotes" slug={slug} />
 
     );
 }
